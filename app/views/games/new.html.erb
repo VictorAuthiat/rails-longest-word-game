@@ -1,0 +1,32 @@
+<div class="container">
+  <h1>Nouveau game</h1>
+  <div class="letters ">
+    <% @letters.each do |letter| %>
+        <div><%= letter %></div>
+    <% end %>
+  </div>
+  <div class="user-input">
+    <p>What is the longest word you can find?</p>
+    <form action="/score" class="form-inline" method="post">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <%= hidden_field_tag :grid, @letters %>
+      <div class="input-group mb-3">
+        <input type="text" name="word" class="form-control">
+        <div class="input-group-append">
+          <input type="submit" value="JOUER" class="form-control btn btn-primary">
+        </div>
+    </form>
+  </div>
+</div>
+
+
+<!--
+What happens
+
+When the user views a form to create, update, or destroy a resource, the Rails app creates a random authenticity_token, stores this token in the session, and places it in a hidden field in the form. When the user submits the form, Rails looks for the authenticity_token, compares it to the one stored in the session, and if they match the request is allowed to continue.
+
+Why it happens
+
+Since the authenticity token is stored in the session, the client cannot know its value. This prevents people from submitting forms to a Rails app without viewing the form within that app itself. Imagine that you are using service A, you logged into the service and everything is ok. Now imagine that you went to use service B, and you saw a picture you like, and pressed on the picture to view a larger size of it. Now, if some evil code was there at service B, it might send a request to service A (which you are logged into), and ask to delete your account, by sending a request to http://serviceA.com/close_account. This is what is known as CSRF (Cross Site Request Forgery).
+
+If service A is using authenticity tokens, this attack vector is no longer applicable, since the request from service B would not contain the correct authenticity token, and will not be allowed to continue. -->
